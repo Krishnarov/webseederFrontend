@@ -4,11 +4,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginSignup from "./Components/LoginSignup";
 import Dashboard from "./Components/Dashboard";
 import Sticky from "./Components/Sticky";
-import Today from "./Components/Today"
-import Calender from "./Components/ Calender"
-import Work from "./Components/ Work"
-import Personal from "./Components/ Personal"
-import List from "./Components/List"
+import Today from "./Components/Today";
+import Calender from "./Components/ Calender";
+import Work from "./Components/ Work";
+import Personal from "./Components/ Personal";
+import List from "./Components/List";
 import Settings from "./Components/Settings";
 
 function App() {
@@ -19,37 +19,31 @@ function App() {
     const token = await sessionStorage.getItem("currentToken");
     setUserActive(token);
     setLoading(false);
-
-    
   };
-useEffect(()=>{
-  // if(userActive===""){
+  useEffect(() => {
+    // if(userActive===""){
 
-    gettoken()
-  // }
-},[userActive])
+    gettoken();
+    // }
+  }, [userActive]);
 
-
-if (loading) {
-  return <div className="text-center mt-72 text-2xl ">Loading...</div>; 
-}
+  if (loading) {
+    return <div className="text-center mt-72 text-2xl ">Loading...</div>;
+  }
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginSignup />} />
-          {userActive && (
-            <>
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard" element={<Dashboard />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/sticky" element={<Sticky />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/today" element={<Today />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/Calender" element={<Calender />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/Work" element={<Work />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/Personal" element={<Personal />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/List1" element={<List />} />
-              <Route path="webseederfrontendbykrishna.netlify.app/dashboard/Settings" element={<Settings />} />
-            </>
-          )}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/sticky" element={<Sticky />} />
+          <Route path="/dashboard/today" element={<Today />} />
+          <Route path="/dashboard/Calender" element={<Calender />} />
+          <Route path="/dashboard/Work" element={<Work />} />
+          <Route path="/dashboard/Personal" element={<Personal />} />
+          <Route path="/dashboard/List1" element={<List />} />
+          <Route path="/dashboard/Settings" element={<Settings />} />
+          
         </Routes>
       </BrowserRouter>
     </>
