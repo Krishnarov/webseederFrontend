@@ -40,14 +40,14 @@ if (loading) {
           <Route path="/" element={<LoginSignup />} />
           {userActive && (
             <>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/sticky" element={<Sticky />} />
-              <Route path="/dashboard/today" element={<Today />} />
-              <Route path="/dashboard/Calender" element={<Calender />} />
-              <Route path="/dashboard/Work" element={<Work />} />
-              <Route path="/dashboard/Personal" element={<Personal />} />
-              <Route path="/dashboard/List1" element={<List />} />
-              <Route path="/dashboard/Settings" element={<Settings />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard" element={<Dashboard />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/sticky" element={<Sticky />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/today" element={<Today />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/Calender" element={<Calender />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/Work" element={<Work />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/Personal" element={<Personal />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/List1" element={<List />} />
+              <Route path="https://webseederfrontendbykrishna.netlify.app/dashboard/Settings" element={<Settings />} />
             </>
           )}
         </Routes>
