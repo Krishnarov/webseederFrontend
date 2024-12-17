@@ -3,21 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
 function Sticky() {
-  const data = [
-    {
-      title: "plan social",
-      content: "- Build content calendar- Plan promotion and distribution",
-    },
-    {
-      title: "plan social",
-      content:
-        "Would need time to get insights (goals, personals, budget, audits), but after, it would be good to focus on assembling my team (start with SEO specialist, then perhaps an email marketer?). Also",
-    },
-    {
-      title: "plan social",
-      content: "- Build content calendar- Plan promotion and distribution",
-    },
-  ];
+
   const [sticky, setsticky] = useState([]);
   const [active, setactive] = useState(false);
   const [newStick, setNewStick] = useState({ title: "", content: "" });
@@ -27,10 +13,15 @@ function Sticky() {
 
   const handleAddStick = async () => {
     const res = await axios.post(
-      "http://localhost:4000/sticky/create",
+      "https://webseederbackend-xgsh.onrender.com/sticky/create",
       newStick,
       { withCredentials: true }
     );
+    // const res = await axios.post(
+    //   "http://localhost:4000/sticky/create",
+    //   newStick,
+    //   { withCredentials: true }
+    // );
     console.log(res);
 
     if (res.status === 201) {
@@ -47,10 +38,15 @@ function Sticky() {
   const getdata = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:4000/sticky/getAllSticks",
+        "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticks",
         {},
         { withCredentials: true }
       );
+      // const res = await axios.get(
+      //   "http://localhost:4000/sticky/getAllSticks",
+      //   {},
+      //   { withCredentials: true }
+      // );
 
       if (res.status === 200) {
         setsticky(res.data.sticks);
@@ -73,9 +69,13 @@ function Sticky() {
         console.log(e);
         
         const res = await axios.delete(
-          `http://localhost:4000/sticky/deletesticky/${e}`,
+          `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
           { withCredentials: true }
         );
+        // const res = await axios.delete(
+        //   `http://localhost:4000/sticky/deletesticky/${e}`,
+        //   { withCredentials: true }
+        // );
         if (res.status === 200) {
           getdata();
           Swal.fire({

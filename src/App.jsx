@@ -19,7 +19,7 @@ function App() {
     const token = await sessionStorage.getItem("currentToken");
     setUserActive(token);
     setLoading(false);
-    // console.log("relode");
+
     
   };
 useEffect(()=>{
@@ -28,7 +28,7 @@ useEffect(()=>{
     gettoken()
   // }
 },[userActive])
-// console.log(userActive);
+
 
 if (loading) {
   return <div className="text-center mt-72 text-2xl ">Loading...</div>; 

@@ -28,14 +28,14 @@ function LoginSignup() {
     );
 
     try {
+      // const res = await axios.post(
+      //   `http://localhost:4000/user/${isLogin ? "login" : "signup"}`,
+      //   formData,{withCredentials:true}
+      // );
       const res = await axios.post(
-        `http://localhost:4000/user/${isLogin ? "login" : "signup"}`,
+        `https://webseederbackend-xgsh.onrender.com/user/${isLogin ? "login" : "register"}`,
         formData,{withCredentials:true}
       );
-      // const res = await axios.post(
-      //   `https://webseederbackend-xgsh.onrender.com/user/${isLogin ? "login" : "signup"}`,
-      //   formData
-      // );
       // console.log(res.data);
       sessionStorage.setItem("currentToken",res.data.user.currentToken)
 

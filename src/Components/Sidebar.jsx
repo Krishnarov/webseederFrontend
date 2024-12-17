@@ -18,10 +18,15 @@ function Sidebar({ activeSection }) {
       }).then(async(result) => {
         if (result.isConfirmed) {
           const res = await axios.post(
-            "http://localhost:4000/user/logout",
+            "https://webseederbackend-xgsh.onrender.com/user/logout",
             {},
             { withCredentials: true }
           );
+          // const res = await axios.post(
+          //   "http://localhost:4000/user/logout",
+          //   {},
+          //   { withCredentials: true }
+          // );
           sessionStorage.clear("currentToken")
           navegate("/");
           Swal.fire({
@@ -37,9 +42,7 @@ function Sidebar({ activeSection }) {
     }
   };
 
-  // const hendelclick=async () => {
 
-  // }
   return (
     <div className="px-4  bg-slate-100 h-[730px] rounded-lg flex  justify-between flex-col">
       <div>
