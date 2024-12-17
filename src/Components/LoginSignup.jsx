@@ -46,7 +46,7 @@ function LoginSignup() {
             text: `Welcome back mr. ${res.data.user.fullname}`,
             icon: "success"
           });
-          window.location.href = "/dashboard";
+          window.location.href = "https://webseederfrontendbykrishna.netlify.app/dashboard";
         } else {
           window.location.reload();
         }
