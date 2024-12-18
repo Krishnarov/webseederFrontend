@@ -20,7 +20,7 @@ function Sidebar({ activeSection }) {
           const res = await axios.post(
             "https://webseederbackend-xgsh.onrender.com/user/logout",
             {},
-            { withCredentials: true }
+            {  withCredentials: true}
           );
           // const res = await axios.post(
           //   "http://localhost:4000/user/logout",

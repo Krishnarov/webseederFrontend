@@ -34,7 +34,7 @@ function LoginSignup() {
       // );
       const res = await axios.post(
         `https://webseederbackend-xgsh.onrender.com/user/${isLogin ? "login" : "register"}`,
-        formData,{withCredentials:true}
+        formData,{ withCredentials: true}
       );
       // console.log(res.data);
       sessionStorage.setItem("currentToken",res.data.user.currentToken)
