@@ -58,45 +58,52 @@ function LoginSignup() {
           });
           handleToggle(true);
         }
+        return;
       }
       if (res.status === 403) {
-        const confirmation = Swal.fire({
-          title: "Are you sure for login ?",
-          text:  res.data.message,
+        Swal.fire({
+          title: "Are you sure you want to login?",
+          text: res.data.message,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Login !"
-        });
-        if (confirmation.isConfirmed) {
-          const res = await axios.post(
-            `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
-            formData,
-            { withCredentials: true }
-          );
-          if (res.status === 201) {
-            if (res.data.user?.currentToken) {
-              sessionStorage.setItem(
-                "currentToken",
-                res.data.user.currentToken
-              );
-              Swal.fire({
-                title: "Successfull !",
-                text: res.data.message,
-                icon: "success",
-                showConfirmButton: false,
-                timer: 2000,
-              });
-              window.location.href = "/dashboard";
-            } else {
-              throw new Error("Token not found in response.");
+          confirmButtonText: "Yes, Login !",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const logoutAndLoginRes = await axios.post(
+              `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
+              formData,
+              { withCredentials: true }
+            );
+            if (logoutAndLoginRes.status === 201) {
+              // const { user, message } = logoutAndLoginRes.data;
+
+              if (logoutAndLoginRes.data.user?.currentToken) {
+                sessionStorage.setItem(
+                  "currentToken",
+                  logoutAndLoginRes.data.user.currentToken
+                );
+                Swal.fire({
+                  title: "Successfull !",
+                  text: logoutAndLoginRes.data.message,
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 2000,
+                });
+                window.location.href = "/dashboard";
+              } else {
+                throw new Error("Token not found in response.");
+              }
+            }else {
+              throw new Error("Unexpected response during logout-and-login.");
             }
           }
-        }
-      } else {
+        });    
+         return;
+      } 
         throw new Error("Unexpected response status: " + res.status);
-      }
+      
     } catch (error) {
       console.error("Submission error:", error);
       Swal.fire({
