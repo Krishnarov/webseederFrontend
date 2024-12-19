@@ -37,7 +37,7 @@ function LoginSignup() {
         { withCredentials: true }
       );
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         if (res.data.user?.currentToken) {
           sessionStorage.setItem("currentToken", res.data.user.currentToken);
           Swal.fire({
@@ -48,9 +48,7 @@ function LoginSignup() {
             timer: 2000
           });
          {isLogin? window.location.href = "/dashboard":window.location.href ='/'};
-        } else {
-          throw new Error("Token not found in response.");
-        }
+        } 
       } else if(res.status===403){
         const confirmation = await Swal.fire({
           title: "Are you sure for Login ?",
