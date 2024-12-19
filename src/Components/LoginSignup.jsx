@@ -47,7 +47,16 @@ function LoginSignup() {
             showConfirmButton: false,
             timer: 2000
           });
-         {isLogin? window.location.href = "/dashboard":window.location.href ='/'};
+        window.location.href = "/dashboard";
+        }else{
+          Swal.fire({
+            title: "Signup Successfull !",
+            text: res.data.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000
+          });
+          handleToggle(true)
         } 
       } else if(res.status===403){
         const confirmation = await Swal.fire({
