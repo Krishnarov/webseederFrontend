@@ -20,12 +20,6 @@ function LoginSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(
-      formData.email,
-      formData.password,
-      formData.fullname,
-      formData.usertype
-    );
 
     try {
     
@@ -33,7 +27,7 @@ function LoginSignup() {
         `https://webseederbackend-xgsh.onrender.com/user/${isLogin ? "login" : "register"}`,
         formData,{ withCredentials: true}
       );
-      console.log(res.data);
+
       sessionStorage.setItem("currentToken",res.data.user.currentToken)
 
       if (res.status === 200) {

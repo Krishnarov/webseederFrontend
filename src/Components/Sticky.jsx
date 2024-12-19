@@ -29,7 +29,7 @@ function Sticky() {
     //   newStick,
     //   { withCredentials: true }
     // );
-    console.log(res);
+
 
     if (res.status === 201) {
       setNewStick({ title: "", content: "" });
@@ -40,7 +40,7 @@ function Sticky() {
       });
     }
   };
-  console.log(Math.random(Math.fround()));
+
 
   const getdata = async () => {
     try {
@@ -79,7 +79,7 @@ function Sticky() {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log(e);
+
 
         const res = await axios.delete(
           `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
@@ -110,7 +110,7 @@ function Sticky() {
   useEffect(() => {
     getdata();
   }, []);
-  console.log(sticky);
+
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#fd";
