@@ -7,15 +7,22 @@ function Sticky() {
   const [sticky, setsticky] = useState([]);
   const [active, setactive] = useState(false);
   const [newStick, setNewStick] = useState({ title: "", content: "" });
+  
   const handleChange = (e) => {
     setNewStick({ ...newStick, [e.target.name]: e.target.value });
   };
 
   const handleAddStick = async () => {
+    const token=sessionStorage.getItem("currentToken")
     const res = await axios.post(
       "https://webseederbackend-xgsh.onrender.com/sticky/create",
       newStick,
-      { withCredentials: true }
+      { withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token || ""}`,
+        }
+       }
     );
     // const res = await axios.post(
     //   "http://localhost:4000/sticky/create",
