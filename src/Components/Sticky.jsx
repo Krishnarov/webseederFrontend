@@ -6,11 +6,20 @@ function Sticky() {
   const [sticky, setsticky] = useState([]);
   const [active, setactive] = useState(false);
   const [newStick, setNewStick] = useState({ title: "", content: "" });
+  const token = sessionStorage.getItem("currentToken");
 
+  if (!token) {
+    Swal.fire({
+      title: "Error",
+      text: "You are not logged in!",
+      icon: "error",
+    });
+    navegate("/");
+    return;
+  }
   const handleChange = (e) => {
     setNewStick({ ...newStick, [e.target.name]: e.target.value });
   };
-  const token = sessionStorage.getItem("currentToken");
 
   const handleAddStick = async () => {
     const res = await axios.post(
@@ -24,13 +33,7 @@ function Sticky() {
         },
       }
     );
-    console.log(res)
-    // const res = await axios.post(
-    //   "http://localhost:4000/sticky/create",
-    //   newStick,
-    //   { withCredentials: true }
-    // );
-
+    console.log(res);
 
     if (res.status === 201) {
       setNewStick({ title: "", content: "" });
@@ -41,7 +44,6 @@ function Sticky() {
       });
     }
   };
-
 
   const getdata = async () => {
     try {
@@ -56,11 +58,6 @@ function Sticky() {
           },
         }
       );
-      // const res = await axios.get(
-      //   "http://localhost:4000/sticky/getAllSticks",
-      //   {},
-      //   { withCredentials: true }
-      // );
 
       if (res.status === 200) {
         setsticky(res.data.sticks);
@@ -80,8 +77,6 @@ function Sticky() {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-
-
         const res = await axios.delete(
           `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
           {
@@ -92,10 +87,7 @@ function Sticky() {
             },
           }
         );
-        // const res = await axios.delete(
-        //   `http://localhost:4000/sticky/deletesticky/${e}`,
-        //   { withCredentials: true }
-        // );
+
         if (res.status === 200) {
           getdata();
           Swal.fire({

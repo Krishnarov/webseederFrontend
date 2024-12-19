@@ -5,11 +5,21 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar({ activeSection }) {
   const navegate = useNavigate();
+  const token = sessionStorage.getItem("currentToken");
+
+  if (!token) {
+    Swal.fire({
+      title: "Error",
+      text: "You are not logged in!",
+      icon: "error",
+    });
+    navegate("/");
+    return;
+  }
 
   const hendalLogout = async () => {
-    const token=sessionStorage.getItem("currentToken")
     try {
-      Swal.fire({
+      const confirmation = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -17,35 +27,41 @@ function Sidebar({ activeSection }) {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Loged Out!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const res = await axios.post(
-            "https://webseederbackend-xgsh.onrender.com/user/logout",
-            {},
-            {
-              withCredentials: true,
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token || ""}`,
-              },
-            }
-          );
-          // const res = await axios.post(
-          //   "http://localhost:4000/user/logout",
-          //   {},
-          //   { withCredentials: true }
-          // );
-          sessionStorage.clear("currentToken");
-          navegate("/");
+      });
+
+      if (confirmation.isConfirmed) {
+        const res = await axios.post(
+          "https://webseederbackend-xgsh.onrender.com/user/logout",
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (res.status === 200) {
+          sessionStorage.removeItem("currentToken")
+
           Swal.fire({
             title: "Loged Out !",
             text: "logout successfull !",
             icon: "success",
           });
+          window.location.href = "/";
+        } else {
+          throw new Error("Logout failed");
         }
-      });
+      }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        title: "Error!",
+        text: "Logout failed. Please try again.",
+        icon: "error",
+      });
     }
   };
 

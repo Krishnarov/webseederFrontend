@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const navigator = useNavigate();
   const handleToggle = () => {
     setIsLogin(!isLogin);
     setFormData({ fullname: "", email: "", password: "", usertype: "" });
@@ -20,37 +19,85 @@ function LoginSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      Swal.fire({
+        title: "Error",
+        text: "Please fill in all required fields.",
+        icon: "error",
+      });
+      return;
+    }
 
     try {
-    
       const res = await axios.post(
-        `https://webseederbackend-xgsh.onrender.com/user/${isLogin ? "login" : "register"}`,
-        formData,{ withCredentials: true}
+        `https://webseederbackend-xgsh.onrender.com/user/${
+          isLogin ? "login" : "register"
+        }`,
+        formData,
+        { withCredentials: true }
       );
-
-      sessionStorage.setItem("currentToken",res.data.user.currentToken)
 
       if (res.status === 200) {
         if (res.data.user?.currentToken) {
+          sessionStorage.setItem("currentToken", res.data.user.currentToken);
           Swal.fire({
             title: "Successfull !",
-            text: `Welcome back mr. ${res.data.user.fullname}`,
-            icon: "success"
+            text: res.data.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000
           });
-          window.location.href = "/dashboard";
+         {isLogin? window.location.href = "/dashboard":window.location.href ='/'};
         } else {
-          window.location.reload();
+          throw new Error("Token not found in response.");
+        }
+      } else if(res.status===403){
+        const confirmation = await Swal.fire({
+          title: "Are you sure for Login ?",
+          text: res.data.message,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Login !",
+        });
+        if (confirmation.isConfirmed) {
+          const res = await axios.post(
+            `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
+            formData,
+            { withCredentials: true }
+          );
+          if(res.status===201){
+            if (res.data.user?.currentToken) {
+              sessionStorage.setItem("currentToken", res.data.user.currentToken);
+              Swal.fire({
+                title: "Successfull !",
+                text: res.data.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000
+              });
+             window.location.href = "/dashboard";
+            }else {
+              throw new Error("Token not found in response.");
+            }
+          }
         }
 
-
-
+      }else {
+        throw new Error("Unexpected response status: " + res.status);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Submission error:", error);
+      Swal.fire({
+        title: "Error",
+        text:error.response?.data?.message ||
+          "An error occurred while processing your request. Please try again.",
+        icon: "error",
+      });
     }
   };
 
-  
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-lg">
