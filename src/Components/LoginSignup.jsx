@@ -45,20 +45,21 @@ function LoginSignup() {
             text: res.data.message,
             icon: "success",
             showConfirmButton: false,
-            timer: 2000
+            timer: 2000,
           });
-        window.location.href = "/dashboard";
-        }else{
+          window.location.href = "/dashboard";
+        } else {
           Swal.fire({
             title: "Signup Successfull !",
             text: res.data.message,
             icon: "success",
             showConfirmButton: false,
-            timer: 2000
+            timer: 2000,
           });
-          handleToggle(true)
-        } 
-      } else if(res.status===403){
+          handleToggle(true);
+        }
+      }
+      if (res.status === 403) {
         const confirmation = await Swal.fire({
           title: "Are you sure for Login ?",
           text: res.data.message,
@@ -74,31 +75,34 @@ function LoginSignup() {
             formData,
             { withCredentials: true }
           );
-          if(res.status===201){
+          if (res.status === 201) {
             if (res.data.user?.currentToken) {
-              sessionStorage.setItem("currentToken", res.data.user.currentToken);
+              sessionStorage.setItem(
+                "currentToken",
+                res.data.user.currentToken
+              );
               Swal.fire({
                 title: "Successfull !",
                 text: res.data.message,
                 icon: "success",
                 showConfirmButton: false,
-                timer: 2000
+                timer: 2000,
               });
-             window.location.href = "/dashboard";
-            }else {
+              window.location.href = "/dashboard";
+            } else {
               throw new Error("Token not found in response.");
             }
           }
         }
-
-      }else {
+      } else {
         throw new Error("Unexpected response status: " + res.status);
       }
     } catch (error) {
       console.error("Submission error:", error);
       Swal.fire({
         title: "Error",
-        text:error.response?.data?.message ||
+        text:
+          error.response?.data?.message ||
           "An error occurred while processing your request. Please try again.",
         icon: "error",
       });

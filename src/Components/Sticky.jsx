@@ -14,7 +14,7 @@ function Sticky() {
       text: "You are not logged in!",
       icon: "error",
     });
-    navegate("/");
+    window.location.href = "/";
     return;
   }
   const handleChange = (e) => {
