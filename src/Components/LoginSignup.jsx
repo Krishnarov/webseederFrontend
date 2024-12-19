@@ -60,14 +60,14 @@ function LoginSignup() {
         }
       }
       if (res.status === 403) {
-        const confirmation = await Swal.fire({
-          title: "Are you sure for Login ?",
-          text: res.data.message,
+        const confirmation = Swal.fire({
+          title: "Are you sure for login ?",
+          text:  res.data.message,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Login !",
+          confirmButtonText: "Yes, Login !"
         });
         if (confirmation.isConfirmed) {
           const res = await axios.post(
