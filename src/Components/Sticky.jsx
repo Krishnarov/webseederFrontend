@@ -24,6 +24,7 @@ function Sticky() {
         },
       }
     );
+    console.log(res)
     // const res = await axios.post(
     //   "http://localhost:4000/sticky/create",
     //   newStick,
