@@ -3,26 +3,26 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
 function Sticky() {
-
   const [sticky, setsticky] = useState([]);
   const [active, setactive] = useState(false);
   const [newStick, setNewStick] = useState({ title: "", content: "" });
-  
+
   const handleChange = (e) => {
     setNewStick({ ...newStick, [e.target.name]: e.target.value });
   };
+  const token = sessionStorage.getItem("currentToken");
 
   const handleAddStick = async () => {
-    const token=sessionStorage.getItem("currentToken")
     const res = await axios.post(
       "https://webseederbackend-xgsh.onrender.com/sticky/create",
       newStick,
-      { withCredentials: true,
+      {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token || ""}`,
-        }
-       }
+        },
+      }
     );
     // const res = await axios.post(
     //   "http://localhost:4000/sticky/create",
@@ -32,7 +32,7 @@ function Sticky() {
     console.log(res);
 
     if (res.status === 201) {
-      setNewStick({ title: "", content: "" })
+      setNewStick({ title: "", content: "" });
       Swal.fire({
         title: "add successfull!",
         text: "add successfull!",
@@ -47,7 +47,13 @@ function Sticky() {
       const res = await axios.get(
         "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticks",
         {},
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token || ""}`,
+          },
+        }
       );
       // const res = await axios.get(
       //   "http://localhost:4000/sticky/getAllSticks",
@@ -74,10 +80,16 @@ function Sticky() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         console.log(e);
-        
+
         const res = await axios.delete(
           `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token || ""}`,
+            },
+          }
         );
         // const res = await axios.delete(
         //   `http://localhost:4000/sticky/deletesticky/${e}`,
@@ -118,7 +130,9 @@ function Sticky() {
             <div className=" shadow rounded-lg border p-8">
               <div className="flex mb-5 items-center">
                 <div
-                  onClick={() => {setactive(false),getdata()}}
+                  onClick={() => {
+                    setactive(false), getdata();
+                  }}
                   className="cursor-pointer w-40"
                 >
                   ← Back

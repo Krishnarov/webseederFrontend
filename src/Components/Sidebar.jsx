@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar({ activeSection }) {
   const navegate = useNavigate();
+
   const hendalLogout = async () => {
+    const token=sessionStorage.getItem("currentToken")
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -14,20 +16,26 @@ function Sidebar({ activeSection }) {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Loged Out!"
-      }).then(async(result) => {
+        confirmButtonText: "Yes, Loged Out!",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           const res = await axios.post(
             "https://webseederbackend-xgsh.onrender.com/user/logout",
             {},
-            {  withCredentials: true}
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token || ""}`,
+              },
+            }
           );
           // const res = await axios.post(
           //   "http://localhost:4000/user/logout",
           //   {},
           //   { withCredentials: true }
           // );
-          sessionStorage.clear("currentToken")
+          sessionStorage.clear("currentToken");
           navegate("/");
           Swal.fire({
             title: "Loged Out !",
@@ -36,12 +44,10 @@ function Sidebar({ activeSection }) {
           });
         }
       });
-      
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <div className="px-4  bg-slate-100 h-[730px] rounded-lg flex  justify-between flex-col">
