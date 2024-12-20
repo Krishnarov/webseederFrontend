@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import DashHero from "./DashHero";
+import axios from "axios";
 
 function Dashboard() {
   const [sticky, setsticky] = useState([]);
@@ -13,7 +14,7 @@ function Dashboard() {
       text: "You are not logged in!",
       icon: "error",
     });
-    // navegate("/");
+    navegate("/");
     return;
   }
 
