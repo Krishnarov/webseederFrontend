@@ -18,7 +18,7 @@ function Today() {
 
   const getdata = async () => {
     try {
-      const res = await axios.get(
+      const res = await axios.post(
         "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticksbyId",
         {},
         {
