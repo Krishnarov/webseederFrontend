@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import DashHero from "./DashHero";
-import { MyContext } from "../Components/createContext.jsx";
+
 function Dashboard() {
   const [sticky, setsticky] = useState([]);
 
-  const { user, setUser } = useContext(MyContext);
+
 
   const token = sessionStorage.getItem("currentToken");
 
