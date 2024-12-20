@@ -16,9 +16,9 @@ function LoginSignup() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (!formData.email || !formData.password) {
       Swal.fire({
         title: "Error",
@@ -27,31 +27,31 @@ function LoginSignup() {
       });
       return;
     }
-
+  
     try {
-      const res = await axios.post(
-        `https://webseederbackend-xgsh.onrender.com/user/${
-          isLogin ? "login" : "register"
-        }`,
-        formData,
-        { withCredentials: true }
-      );
-
+      const endpoint = isLogin ? "login" : "register";
+      const API_BASE_URL = "https://webseederbackend-xgsh.onrender.com";
+  
+      const res = await axios.post(`${API_BASE_URL}/user/${endpoint}`, formData, {
+        withCredentials: true,
+      });
+  
       if (res.status === 201) {
-        if (res.data.user?.currentToken) {
-          sessionStorage.setItem("currentToken", res.data.user.currentToken);
+        const { currentToken, message } = res.data.user || {};
+        if (currentToken) {
+          sessionStorage.setItem("currentToken", currentToken);
           Swal.fire({
-            title: "Successfull !",
-            text: res.data.message,
+            title: "Successful!",
+            text: message,
             icon: "success",
             showConfirmButton: false,
             timer: 2000,
           });
-          window.location.href = "/dashboard";
+          navigate("/dashboard");
         } else {
           Swal.fire({
-            title: "Signup Successfull !",
-            text: res.data.message,
+            title: "Signup Successful!",
+            text: message,
             icon: "success",
             showConfirmButton: false,
             timer: 2000,
@@ -60,6 +60,7 @@ function LoginSignup() {
         }
         return;
       }
+  
       if (res.status === 403) {
         Swal.fire({
           title: "Are you sure you want to login?",
@@ -68,53 +69,150 @@ function LoginSignup() {
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Login !",
+          confirmButtonText: "Yes, Login!",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const logoutAndLoginRes = await axios.post(
-              `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
+              `${API_BASE_URL}/user/logoutandlogin`,
               formData,
               { withCredentials: true }
             );
+  
             if (logoutAndLoginRes.status === 201) {
-              // const { user, message } = logoutAndLoginRes.data;
-
-              if (logoutAndLoginRes.data.user?.currentToken) {
-                sessionStorage.setItem(
-                  "currentToken",
-                  logoutAndLoginRes.data.user.currentToken
-                );
+              const { currentToken, message } = logoutAndLoginRes.data.user || {};
+              if (currentToken) {
+                sessionStorage.setItem("currentToken", currentToken);
                 Swal.fire({
-                  title: "Successfull !",
-                  text: logoutAndLoginRes.data.message,
+                  title: "Successful!",
+                  text: message,
                   icon: "success",
                   showConfirmButton: false,
                   timer: 2000,
                 });
-                window.location.href = "/dashboard";
+                navigate("/dashboard");
               } else {
                 throw new Error("Token not found in response.");
               }
-            }else {
+            } else {
               throw new Error("Unexpected response during logout-and-login.");
             }
           }
-        });    
-         return;
-      } 
-        throw new Error("Unexpected response status: " + res.status);
-      
+        });
+        return;
+      }
+  
+      throw new Error("Unexpected response status: " + res.status);
     } catch (error) {
       console.error("Submission error:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "An error occurred while processing your request. Please try again.";
       Swal.fire({
         title: "Error",
-        text:
-          error.response?.data?.message ||
-          "An error occurred while processing your request. Please try again.",
+        text: errorMessage,
         icon: "error",
       });
     }
   };
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!formData.email || !formData.password) {
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Please fill in all required fields.",
+  //       icon: "error",
+  //     });
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await axios.post(
+  //       `https://webseederbackend-xgsh.onrender.com/user/${
+  //         isLogin ? "login" : "register"
+  //       }`,
+  //       formData,
+  //       { withCredentials: true }
+  //     );
+
+  //     if (res.status === 201) {
+  //       if (res.data.user?.currentToken) {
+  //         sessionStorage.setItem("currentToken", res.data.user.currentToken);
+  //         Swal.fire({
+  //           title: "Successfull !",
+  //           text: res.data.message,
+  //           icon: "success",
+  //           showConfirmButton: false,
+  //           timer: 2000,
+  //         });
+  //         window.location.href = "/dashboard";
+  //       } else {
+  //         Swal.fire({
+  //           title: "Signup Successfull !",
+  //           text: res.data.message,
+  //           icon: "success",
+  //           showConfirmButton: false,
+  //           timer: 2000,
+  //         });
+  //         handleToggle(true);
+  //       }
+  //       return;
+  //     }
+  //     if (res.status === 403) {
+  //       Swal.fire({
+  //         title: "Are you sure you want to login?",
+  //         text: res.data.message,
+  //         icon: "warning",
+  //         showCancelButton: true,
+  //         confirmButtonColor: "#3085d6",
+  //         cancelButtonColor: "#d33",
+  //         confirmButtonText: "Yes, Login !",
+  //       }).then(async (result) => {
+  //         if (result.isConfirmed) {
+  //           const logoutAndLoginRes = await axios.post(
+  //             `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
+  //             formData,
+  //             { withCredentials: true }
+  //           );
+  //           if (logoutAndLoginRes.status === 201) {
+  //             // const { user, message } = logoutAndLoginRes.data;
+
+  //             if (logoutAndLoginRes.data.user?.currentToken) {
+  //               sessionStorage.setItem(
+  //                 "currentToken",
+  //                 logoutAndLoginRes.data.user.currentToken
+  //               );
+  //               Swal.fire({
+  //                 title: "Successfull !",
+  //                 text: logoutAndLoginRes.data.message,
+  //                 icon: "success",
+  //                 showConfirmButton: false,
+  //                 timer: 2000,
+  //               });
+  //               window.location.href = "/dashboard";
+  //             } else {
+  //               throw new Error("Token not found in response.");
+  //             }
+  //           }else {
+  //             throw new Error("Unexpected response during logout-and-login.");
+  //           }
+  //         }
+  //       });    
+  //        return;
+  //     } 
+  //       throw new Error("Unexpected response status: " + res.status);
+      
+  //   } catch (error) {
+  //     console.error("Submission error:", error);
+  //     Swal.fire({
+  //       title: "Error",
+  //       text:
+  //         error.response?.data?.message ||
+  //         "An error occurred while processing your request. Please try again.",
+  //       icon: "error",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
