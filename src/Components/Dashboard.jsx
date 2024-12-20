@@ -5,11 +5,8 @@ import DashHero from "./DashHero";
 function Dashboard() {
   const [sticky, setsticky] = useState([]);
 
-
-
   const token = sessionStorage.getItem("currentToken");
 
-  console.log(user);
   if (!token) {
     Swal.fire({
       title: "Error",
