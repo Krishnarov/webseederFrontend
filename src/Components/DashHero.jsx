@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import Swal from "sweetalert2";
 
-function DashHero({ sticky }) {
+function DashHero({ sticky, getdata }) {
   const token = sessionStorage.getItem("currentToken");
 
   if (!token) {

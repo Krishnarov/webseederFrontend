@@ -50,7 +50,7 @@ function Dashboard() {
         <Sidebar activeSection={"Upcoming"} />
       </div>
       <div className="w-4/5">
-        <DashHero sticky={sticky} />
+        <DashHero sticky={sticky} getdata={getdata}/>
       </div>
     </div>
   );
