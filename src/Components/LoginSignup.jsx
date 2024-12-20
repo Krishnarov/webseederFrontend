@@ -76,6 +76,7 @@ function LoginSignup() {
               formData,
               { withCredentials: true }
             );
+            console.log("logoutAndLoginRes  :- ",logoutAndLoginRes)
             if (logoutAndLoginRes.status === 201) {
               // const { user, message } = logoutAndLoginRes.data;
 
