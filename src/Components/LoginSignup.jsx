@@ -210,7 +210,7 @@ function LoginSignup() {
             type="submit"
             className="w-full flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            {isLoding && <img src="public/images/loder.gif" className="h-6 mr-2"/>} {isLogin ? "Login" : "Sign Up"}
+            {isLoding && <img src="/images/loder.gif" className="h-6 mr-2"/>} {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
         <div className="text-sm text-center text-gray-600">
