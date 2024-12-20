@@ -48,13 +48,13 @@ function Sticky() {
   const getdata = async () => {
     try {
       const res = await axios.get(
-        "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticks",
+        "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticksbyId",
         {},
         {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token || ""}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

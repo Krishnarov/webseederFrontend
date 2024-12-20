@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Sidebar({ activeSection }) {
   const navegate = useNavigate();
   const token = sessionStorage.getItem("currentToken");
+  const user = sessionStorage.getItem("user");
 
   if (!token) {
     Swal.fire({
@@ -69,7 +70,7 @@ function Sidebar({ activeSection }) {
     <div className="px-4  bg-slate-100 h-[730px] rounded-lg flex  justify-between flex-col">
       <div>
         <div className="flex items-center justify-between py-2 border-b">
-          <div className="text-xl font-bold">Menu</div>
+          <div className="text-xl font-bold">{user? user.fullname:"Menu"}</div>
           <div>
             <i className="ri-menu-line"></i>
           </div>

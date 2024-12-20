@@ -43,6 +43,7 @@ function LoginSignup() {
       if (res.status === 201) {
         if (res.data.user?.currentToken) {
           sessionStorage.setItem("currentToken", res.data.user.currentToken);
+          sessionStorage.setItem("user", res.data.user);
           Swal.fire({
             title: "Successfull !",
             text: res.data.message,
@@ -90,6 +91,8 @@ function LoginSignup() {
                   "currentToken",
                   logoutAndLoginRes.data.user.currentToken
                 );
+                sessionStorage.setItem("user", res.data.user);
+
                 Swal.fire({
                   title: "Successfull !",
                   text: logoutAndLoginRes.data.message,

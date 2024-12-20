@@ -10,6 +10,7 @@ import Work from "./Components/ Work";
 import Personal from "./Components/ Personal";
 import List from "./Components/List";
 import Settings from "./Components/Settings";
+import MyProvider from "./Components/createContext.jsx/";
 
 function App() {
   const [userActive, setUserActive] = useState([]);
@@ -35,15 +36,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginSignup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/sticky" element={<Sticky />} />
-          <Route path="/dashboard/today" element={<Today />} />
-          <Route path="/dashboard/Calender" element={<Calender />} />
-          <Route path="/dashboard/Work" element={<Work />} />
-          <Route path="/dashboard/Personal" element={<Personal />} />
-          <Route path="/dashboard/List1" element={<List />} />
-          <Route path="/dashboard/Settings" element={<Settings />} />
-          
+          {/* <MyProvider> */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/sticky" element={<Sticky />} />
+            <Route path="/dashboard/today" element={<Today />} />
+            <Route path="/dashboard/Calender" element={<Calender />} />
+            <Route path="/dashboard/Work" element={<Work />} />
+            <Route path="/dashboard/Personal" element={<Personal />} />
+            <Route path="/dashboard/List1" element={<List />} />
+            <Route path="/dashboard/Settings" element={<Settings />} />
+          {/* </MyProvider> */}
         </Routes>
       </BrowserRouter>
     </>
