@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoding, setisLoding] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,6 +20,7 @@ function LoginSignup() {
   };
 
   const handleSubmit = async (e) => {
+    setisLoding(true)
     e.preventDefault();
     if (!formData.email || !formData.password) {
       Swal.fire({
@@ -47,6 +50,7 @@ function LoginSignup() {
             showConfirmButton: false,
             timer: 2000,
           });
+          setisLoding(false)
           window.location.href = "/dashboard";
         } else {
           Swal.fire({
@@ -57,6 +61,7 @@ function LoginSignup() {
             timer: 2000,
           });
           handleToggle(true);
+          setisLoding(false)
         }
         return;
       }
@@ -92,6 +97,7 @@ function LoginSignup() {
                   showConfirmButton: false,
                   timer: 2000,
                 });
+                setisLoding(false)
                 window.location.href = "/dashboard";
               } else {
                 throw new Error("Token not found in response.");
@@ -100,7 +106,8 @@ function LoginSignup() {
               throw new Error("Unexpected response during logout-and-login.");
             }
           }
-        });    
+        });
+        setisLoding(false)    
          return;
       } 
         throw new Error("Unexpected response status: " + res.status);
@@ -114,6 +121,7 @@ function LoginSignup() {
           "An error occurred while processing your request. Please try again.",
         icon: "error",
       });
+      setisLoding(false)
     }
   };
 
@@ -200,9 +208,9 @@ function LoginSignup() {
           )}
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            {isLogin ? "Login" : "Sign Up"}
+            {isLoding && <img src="public/images/loder.gif" className="h-6 mr-2"/>} {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
         <div className="text-sm text-center text-gray-600">
@@ -211,7 +219,7 @@ function LoginSignup() {
             onClick={handleToggle}
             className="text-blue-500 hover:underline focus:outline-none"
           >
-            {isLogin ? "Sign Up" : "Login"}
+           {isLogin ? "Sign Up" : "Login"}
           </button>
         </div>
       </div>
