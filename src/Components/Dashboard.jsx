@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import DashHero from "./DashHero";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Dashboard() {
   const [sticky, setsticky] = useState([]);

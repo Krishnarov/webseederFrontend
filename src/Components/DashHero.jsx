@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import Swal from "sweetalert2";
 
 function DashHero({ sticky }) {
   const token = sessionStorage.getItem("currentToken");

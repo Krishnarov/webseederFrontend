@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Work() {
   const [sticky, setsticky] = useState([]);
