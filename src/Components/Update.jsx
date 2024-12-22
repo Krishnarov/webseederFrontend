@@ -3,17 +3,17 @@ import Swal from "sweetalert2";
 import axios from "axios";
 function Update({ back, user }) {
   const [fullname, setFullname] = useState(user.fullname);
-  const [photo, setPhoto] = useState(user?.photo);
+  const [photo, setPhoto] = useState(null);
   console.log(user);
 
-  const formdata = new FormData();
-  formdata.append("fullname", fullname);
-  formdata.append("photo", photo);
+  const formData = new FormData();
+  formData.append("fullname", fullname);
+  if (photo) formData.append("photo", photo);
   const hendalUpdate = async () => {
     try {
       const response = await axios.put(
         `https://webseederbackend-xgsh.onrender.com/user/update/${user._id}`,
-        formdata,
+        formData,
         {
           withCredentials: true,
           headers: {
@@ -22,6 +22,15 @@ function Update({ back, user }) {
           },
         }
       );
+
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Success!",
+          text: "Profile Updated Successfully",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+      }
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -59,13 +68,13 @@ function Update({ back, user }) {
           <input
             type="file"
             name="photo"
-            className="p-2 w-full mb-2 border border-gray-300 rounded dark:bg-slate-900 dark:text-white "
+            accept="image/*"
 
+            className="p-2 w-full mb-2 border border-gray-300 rounded dark:bg-slate-900 dark:text-white "
             onChange={(e) => setPhoto(e.target.files[0])}
           />
           <div
             onClick={() => hendalUpdate()}
-            
             className="w-full flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Update
