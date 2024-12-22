@@ -43,7 +43,7 @@ function LoginSignup() {
       if (res.status === 201) {
         if (res.data.user?.currentToken) {
           sessionStorage.setItem("currentToken", res.data.user.currentToken);
-          sessionStorage.setItem("user", res.data.user);
+          sessionStorage.setItem("user", JSON.stringify(res.data.user));
           Swal.fire({
             title: "Successfull !",
             text: res.data.message,
@@ -82,16 +82,15 @@ function LoginSignup() {
               formData,
               { withCredentials: true }
             );
-            console.log("logoutAndLoginRes  :- ",logoutAndLoginRes)
             if (logoutAndLoginRes.status === 201) {
-              // const { user, message } = logoutAndLoginRes.data;
+
 
               if (logoutAndLoginRes.data.user?.currentToken) {
                 sessionStorage.setItem(
                   "currentToken",
                   logoutAndLoginRes.data.user.currentToken
                 );
-                sessionStorage.setItem("user", res.data.user);
+                sessionStorage.setItem("user", JSON.stringify(logoutAndLoginRes.data.user));
 
                 Swal.fire({
                   title: "Successfull !",
@@ -188,27 +187,6 @@ function LoginSignup() {
               className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300"
             />
           </div>
-          {!isLogin && (
-            <div>
-              <div>
-                Recruiter{" "}
-                <input
-                  type="radio"
-                  name="usertype"
-                  value="Recruiter"
-                  onChange={handleChange}
-                />{" "}
-                Client{" "}
-                <input
-                  type="radio"
-                  name="usertype"
-                  id="client"
-                  value="client"
-                  onChange={handleChange}
-                />{" "}
-              </div>
-            </div>
-          )}
           <button
             type="submit"
             className="w-full flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"

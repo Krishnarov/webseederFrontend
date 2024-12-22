@@ -14,12 +14,12 @@ function Calender() {
     return;
   }
   return (
-    <div className="flex px-10 my-4">
+    <div className="flex md:px-10 px-2 py-4 dark:bg-slate-900 dark:text-white min-h-screen">
       <div className="w-1/5">
         <Sidebar activeSection={"Calender"} />
       </div>
       <div className="w-4/5">
-        <h1>calender</h1>
+        <div className="md:text-4xl text-2xl font-bold ">Calender</div>
       </div>
     </div>
   );

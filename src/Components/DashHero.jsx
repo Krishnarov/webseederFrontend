@@ -1,8 +1,15 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import TimeAgo from "./TimeAgo.jsx";
+import { mycontext } from "./Consext.jsx";
+import Loder from "./Loder.jsx";
+function DashHero() {
+  const [isLoding, setisLoding] = useState(true);
 
-function DashHero({ sticky, getdata }) {
+  const { sticky, getdata } = useContext(mycontext);
+
+  const [upcoming, setUpcoming] = useState([]);
   const token = sessionStorage.getItem("currentToken");
 
   if (!token) {
@@ -55,24 +62,45 @@ function DashHero({ sticky, getdata }) {
     return (color += letters[Math.floor(Math.random() * 16)]);
   };
 
-  return (
-    <div className="px-4 ">
-      <div className="text-4xl font-bold ">Upcoming</div>
+  useEffect(() => {
+    if (sticky.length === 0) {
+      getdata();
+    }
 
-      <div className="p-4 border rounded-lg shadow grid grid-cols-3 gap-4 mt-4">
-        {sticky.map((e, index) => (
+    const currentDate = new Date();
+    const UpcmingNotes = sticky.filter(
+      (note) => new Date(note.date) > currentDate
+    );
+    setUpcoming(UpcmingNotes);
+    if(UpcmingNotes.length > 0){
+      setisLoding(false)
+    }
+  }, [sticky]);
+
+  if(isLoding){
+    return <Loder h={"h-screen"}/>
+  }
+  return (
+    <div className="md:px-4">
+      <div className="md:text-4xl text-2xl font-bold ">Upcoming</div>
+
+      <div className="p-4 border rounded-lg shadow grid md:grid-cols-3 gap-4 mt-4 grid-cols-1">
+        {upcoming.map((e, index) => (
           <div key={index} className=" ">
             <div
               style={{ backgroundColor: getRandomColor("00") }}
-              className={`min-h-72  p-4  gap-2 rounded-lg  bg-yellow relative`}
+              className={`min-h-72 text-black p-4  gap-2 rounded-lg  bg-yellow relative`}
             >
+              <div className="text-sx text-stone-500 absolute right-4 top-2">
+                <TimeAgo date={e.date} />
+              </div>
               <div className="text-xl font-bold">{e.title}</div>
               <div className="py-2">{e.content}</div>
               <div
                 onClick={() => hendaldeleta(e._id)}
                 className="absolute bottom-4 text-xl hover:text-red-500"
               >
-                <i class="ri-delete-bin-fill"></i>
+                <i className="ri-delete-bin-fill"></i>
               </div>
             </div>
           </div>
