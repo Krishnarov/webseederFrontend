@@ -9,6 +9,7 @@ const {sticky,getdata}=useContext(mycontext)
 const [isLoding, setIsLoding] = useState(true);
 const [Wokrsticky, setWokrsticky] = useState([]);
   const token = sessionStorage.getItem("currentToken");
+  const Api = import.meta.env.VITE_CONSTANT_API;
 
   if (!token) {
     Swal.fire({
@@ -47,7 +48,7 @@ const getWokrsticky=()=>{
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
+          `${Api}/sticky/deletesticky/${e}`,
           {
             withCredentials: true,
             headers: {

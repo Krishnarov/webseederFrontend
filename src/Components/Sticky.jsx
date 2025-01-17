@@ -9,6 +9,7 @@ function Sticky() {
   const [active, setactive] = useState(false);
   const [allsticky, setallsticky] = useState([]);
   const [isLoding, setisLoding] = useState(true);
+  const Api = import.meta.env.VITE_CONSTANT_API;
 
   const [newStick, setNewStick] = useState({
     title: "",
@@ -43,7 +44,7 @@ function Sticky() {
     setisLoding(true);
     try {
       const res = await axios.post(
-        "https://webseederbackend-xgsh.onrender.com/sticky/create",
+        `${Api}/sticky/create`,
         newStick,
         {
           withCredentials: true,
@@ -86,7 +87,7 @@ function Sticky() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
+          `${Api}/sticky/deletesticky/${e}`,
           {
             withCredentials: true,
             headers: {

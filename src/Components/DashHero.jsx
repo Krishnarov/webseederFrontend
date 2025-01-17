@@ -8,6 +8,7 @@ function DashHero() {
   const [isLoding, setisLoding] = useState(true);
 
   const { sticky, getdata } = useContext(mycontext);
+  const Api = import.meta.env.VITE_CONSTANT_API;
 
   const [upcoming, setUpcoming] = useState([]);
   const token = sessionStorage.getItem("currentToken");
@@ -34,7 +35,7 @@ function DashHero() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
+          `${Api}/sticky/deletesticky/${e}`,
           {
             withCredentials: true,
             headers: {

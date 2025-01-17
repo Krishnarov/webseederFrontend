@@ -4,26 +4,35 @@ import axios from "axios";
 function Update({ back, user }) {
   const [fullname, setFullname] = useState(user.fullname);
   const [photo, setPhoto] = useState(null);
-  console.log(user);
 
-  const formData = new FormData();
-  formData.append("fullname", fullname);
-  if (photo) formData.append("photo", photo);
+  const Api = import.meta.env.VITE_CONSTANT_API;
+
   const hendalUpdate = async () => {
     try {
+      if (!photo) {
+        alert("Please select a photo");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("fullname", fullname);
+      if (photo) formData.append("photo", photo);
+
       const response = await axios.put(
-        `https://webseederbackend-xgsh.onrender.com/user/update/${user._id}`,
+        `${Api}/user/update/${user._id}`,
         formData,
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.currentToken}`,
           },
         }
       );
+      sessionStorage.setItem("user", JSON.stringify(response.data.user));
+
 
       if (response.status === 200) {
+      
         Swal.fire({
           title: "Success!",
           text: "Profile Updated Successfully",
@@ -68,8 +77,6 @@ function Update({ back, user }) {
           <input
             type="file"
             name="photo"
-            accept="image/*"
-
             className="p-2 w-full mb-2 border border-gray-300 rounded dark:bg-slate-900 dark:text-white "
             onChange={(e) => setPhoto(e.target.files[0])}
           />

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import GoogleAuth from "./GoogleAuth";
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoding, setisLoding] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const Api = import.meta.env.VITE_CONSTANT_API;
+
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,6 +25,44 @@ function LoginSignup() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handlecallbackResponse = (response) => {
+    console.log("JWT Token:", response.credential);
+
+    // Decode jwt token
+    const userObject = JSON.parse(atob(response.credential.split(".")[1]));
+    console.log("UserInfo", userObject);
+    setUser({
+      fullname:userObject.name,
+      email:userObject.email,
+      photo:userObject.picture,
+    })
+    sessionStorage.setItem("currentToken", response.credential);
+          sessionStorage.setItem("user", JSON.stringify(userObject));
+    window.location.href = "/dashboard";
+
+  };
+
+  useEffect(() => {
+    // Load Google Api Script
+    const google = window.google;
+    google.accounts.id.initialize({
+      client_id:
+        "727301274224-p4boer1rvc864a62sul4ibdfkdujgs52.apps.googleusercontent.com",
+      callback: handlecallbackResponse,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("GoogleSignInDiv"),
+      {
+        theme: "outline",
+        size: "large",
+      }
+    );
+    // automatic sign in previous signed in
+    google.accounts.id.prompt();
+  }, []);
+
+
+
   const handleSubmit = async (e) => {
     setisLoding(true)
     e.preventDefault();
@@ -30,10 +74,9 @@ function LoginSignup() {
       });
       return;
     }
-
     try {
       const res = await axios.post(
-        `https://webseederbackend-xgsh.onrender.com/user/${
+        `${Api}/user/${
           isLogin ? "login" : "register"
         }`,
         formData,
@@ -78,7 +121,7 @@ function LoginSignup() {
         }).then(async (result) => {
           if (result.isConfirmed) {
             const logoutAndLoginRes = await axios.post(
-              `https://webseederbackend-xgsh.onrender.com/user/logoutandlogin`,
+              `${Api}/user/logoutandlogin`,
               formData,
               { withCredentials: true }
             );
@@ -195,6 +238,8 @@ function LoginSignup() {
           </button>
         </form>
         <div className="text-sm text-center text-gray-600">
+          {/* <GoogleAuth/> */}
+          <div id="GoogleSignInDiv"></div>
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             onClick={handleToggle}

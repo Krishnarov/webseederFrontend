@@ -5,11 +5,13 @@ export const mycontext = createContext();
 
 export const TaksProvider = ({ children }) => {
       const [sticky, setsticky] = useState([]);
+      const Api = import.meta.env.VITE_CONSTANT_API;
+
     const token = sessionStorage.getItem("currentToken");
   const getdata = async () => {
     try {
       const res = await axios.post(
-        "https://webseederbackend-xgsh.onrender.com/sticky/getAllSticksbyId",
+        `${Api}/sticky/getAllSticksbyId`,
         {},
         {
           withCredentials: true,

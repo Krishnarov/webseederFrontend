@@ -11,6 +11,7 @@ function Today() {
   const [todaysticky, setToday] = useState([]);
   const token = sessionStorage.getItem("currentToken");
   const [isLoding, setisLoding] = useState(true);
+  const Api = import.meta.env.VITE_CONSTANT_API;
 
   if (!token) {
     Swal.fire({
@@ -53,7 +54,7 @@ function Today() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `https://webseederbackend-xgsh.onrender.com/sticky/deletesticky/${e}`,
+          `${Api}/sticky/deletesticky/${e}`,
           {
             withCredentials: true,
             headers: {
@@ -79,7 +80,7 @@ function Today() {
   const hendalDoneTask = async (e) => {
     console.log(token, e);
     const res = await axios.put(
-      `https://webseederbackend-xgsh.onrender.com/sticky/taskdone/${e}`,
+      `${Api}/sticky/taskdone/${e}`,
       { isDone: true },
       {
         withCredentials: true,

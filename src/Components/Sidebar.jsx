@@ -12,7 +12,8 @@ function Sidebar({ activeSection ,heandelsearch}) {
     workLen: 0,
     list1Len: 0,
   });
-  
+  const Api = import.meta.env.VITE_CONSTANT_API;
+
   const { sticky, getdata } = useContext(mycontext);
   const navegate = useNavigate();
   const token = sessionStorage.getItem("currentToken");
@@ -83,7 +84,7 @@ function Sidebar({ activeSection ,heandelsearch}) {
 
       if (confirmation.isConfirmed) {
         const res = await axios.post(
-          "https://webseederbackend-xgsh.onrender.com/user/logout",
+          `${Api}/user/logout`,
           {},
           {
             withCredentials: true,
